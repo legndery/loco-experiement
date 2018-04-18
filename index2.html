@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js'></script>
+    <style>
+        html,
+        body {
+            height: 100%
+        }
+
+        .row {
+            margin: 0 -15px;
+        }
+
+        .col {
+            height: 100%;
+            position: relative;
+            min-height: 1px;
+            padding-right: 15px;
+            padding-left: 15px;
+            float: left;
+            width: 45%;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+        var socket = io("ws://localhost:5151");
+        var onevent = socket.onevent;
+        socket.onevent = function (packet) {
+            var args = packet.data || [];
+            onevent.call(this, packet);    // original call
+            packet.data = ["*"].concat(args);
+            onevent.call(this, packet);      // additional call to catch-all
+        };
+        socket.on("*", function (event, data) {
+            console.log(event);
+            console.log(data);
+        });
+    </script>
+</body>
+
+</html>

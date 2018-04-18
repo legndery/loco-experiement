@@ -1,15 +1,32 @@
-var opts = {
-    extraHeaders: {
-        'X-Custom-Header-For-My-Project': 'my-secret-access-token',
-        'Cookie': 'user_session=NI2JlCKF90aE0sJZD9ZzujtdsUqNYSBYxzlTsvdSUe35ZzdtVRGqYFr0kdGxbfc5gUOkR9RGp20GVKza; path=/; expires=Tue, 07-Apr-2015 18:18:08 GMT; secure; HttpOnly'
-    }
-};
+//////////////////////////////////
+const app = require('express')(), 
+    http=require('http').Server(app),
+    s_io = require('socket.io')(http);
+s_io.on('connection', function(socket){
+    console.log('user connected');
+})
+const port = 5151;
+http.listen(port, ()=> {
+    console.log("Listening to:"+port);
+})
 
-var socket = require('engine.io-client')('https://realtime.getloconow.com', opts);
-socket.on('open', function () {
-    socket.on('message', function (data) { });
-    socket.on('close', function () { });
-});
+/////////////////////////////////////
+
+
+var opts = {
+        transportOptions: {
+            polling: {
+                extraHeaders: {
+                    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxlZ25kZXJ5IiwidXNlcl91aWQiOiJUS0wxMElZOVNPIiwiaXNfc3RhZmYiOmZhbHNlLCJsYW5ndWFnZSI6MX0.FP4cwD90Mps4DI7N2gLvhStG9rJkPIZ8CshfvEjLHMI",
+                }
+            }
+        },
+        transports: ['polling'],
+
+        reconnect: true
+    };
+const io = require('socket.io-client');
+var socket = io.connect('https://realtime.getloconow.com', opts);
 var onevent = socket.onevent;
 socket.onevent = function (packet) {
     var args = packet.data || [];
@@ -18,6 +35,11 @@ socket.onevent = function (packet) {
     onevent.call(this, packet);      // additional call to catch-all
 };
 socket.on("*", function (event, data) {
-    console.log(event);
-    console.log(data);
+    s_io.emit(event,  data);
 });
+socket.on("contest", function (data) {
+    s_io.emit('contest', data);
+});
+socket.on("question",(data)=>{
+    s_io.emit('question',data);
+})
