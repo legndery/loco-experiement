@@ -5,7 +5,7 @@ const app = require('express')(),
 s_io.on('connection', function(socket){
     console.log('user connected');
 })
-const port = 5151;
+const port = 50155;
 http.listen(port, ()=> {
     console.log("Listening to:"+port);
 })

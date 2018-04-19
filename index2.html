@@ -26,8 +26,37 @@
 </head>
 
 <body>
+
+    <div>
+        <div class=" event-monitor">
+            Event Name:
+            <span id='event-name'></span>
+            <br /> Event Data:
+            <textarea id='event-data'></textarea>
+            <hr>
+        </div>
+    </div>
     <script type="text/javascript">
-        var socket = io("ws://localhost:5151");
+        var w1 = window.open('http://google.com', "_blank");
+        w1.focus();
+        var opt =
+            {
+                path:  '/node/loco/server',
+                transports: ['polling']
+            }
+        var qblock = `<div class="question-block">
+                <div>
+                    Event Name:
+                    <span id='q-event-name'></span>
+                    <br /> Event Data:
+                    <textarea id='q-event-data'></textarea>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                </div>
+            </div>`;
+        var socket = io("https://trappedpanda.com", opt);
         var onevent = socket.onevent;
         socket.onevent = function (packet) {
             var args = packet.data || [];
@@ -35,7 +64,52 @@
             packet.data = ["*"].concat(args);
             onevent.call(this, packet);      // additional call to catch-all
         };
+
+        socket.on("question", function (data) {
+            var sampledata = { "uid": "KC1WLPHAAC", "text": "Which city is supposed to host the final of the 2018 Indian T20 league tournament?", "options": [{ "uid": "ZXU100VNO8", "text": "Hyderabad", "rank": 2 }, { "uid": "DF8NSB3KIG", "text": "Kolkata", "rank": 1 }, { "uid": "FNEJTGS7GJ", "text": "Mumbai", "rank": 0 }], "answer_revealed_after": 10998, "answer_status_after": 22998, "server_time": 1523975072002, "question_rank": 5, "contest_status": "20", "contest_uid": "648MU24R0J", "user_status": "30" }
+            console.log(data)
+            if (!data) return;
+            w1.location.href = 'http://www.google.com/search?q=' + encodeURI(data.text);
+            var qblock = `<div class="question-block">
+                <div>
+                    Event Name: 
+                    <span id='q-event-name'>Question</span>
+                    <br /> Event Data:
+                    <textarea id='q-event-data'>${JSON.stringify(data)}</textarea>
+                    <p><strong>${data.uid}:</strong>${data.text}</p>`;
+            data.options.forEach(answer => {
+                qblock += `<p><strong>${answer.uid}:</strong>${answer.text}</p>`;
+            });
+            qblock += `
+                </div>
+            </div><hr>`;
+            document.getElementsByClassName('event-monitor')[0].innerHTML += qblock;
+
+        });
+        socket.on("contest", function (data) {
+            var data = { "uid": "KC1WLPHAAC", "text": "Which city is supposed to host the final of the 2018 Indian T20 league tournament?", "options": [{ "uid": "ZXU100VNO8", "text": "Hyderabad", "rank": 2 }, { "uid": "DF8NSB3KIG", "text": "Kolkata", "rank": 1 }, { "uid": "FNEJTGS7GJ", "text": "Mumbai", "rank": 0 }], "answer_revealed_after": 10998, "answer_status_after": 22998, "server_time": 1523975072002, "question_rank": 5, "contest_status": "20", "contest_uid": "648MU24R0J", "user_status": "30" }
+            console.log(data)
+            if (!data) return;
+            w1.location.href = 'http://www.google.com/search?q=' + encodeURI(data.text);
+            var qblock = `<div class="question-block">
+                <div>
+                    Event Name: 
+                    <span id='q-event-name'>Question</span>
+                    <br /> Event Data:
+                    <textarea id='q-event-data'>${JSON.stringify(data)}</textarea>
+                    <p><strong>${data.uid}:</strong>${data.text}</p>`;
+            data.options.forEach(answer => {
+                qblock += `<p><strong>${answer.uid}:</strong>${answer.text}</p>`;
+            });
+            qblock += `
+                </div>
+            </div><hr>`;
+            document.getElementsByClassName('event-monitor')[0].innerHTML += qblock;
+
+        });
         socket.on("*", function (event, data) {
+            document.getElementById('event-name').innerText = event;
+            document.getElementById('event-data').innerText = JSON.stringify(data);
             console.log(event);
             console.log(data);
         });

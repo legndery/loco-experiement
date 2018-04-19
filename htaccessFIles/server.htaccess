@@ -1,0 +1,4 @@
+RewriteEngine on
+
+RewriteRule ^index.html.var$ http://localhost:50155/socket.io/ [P]
+RewriteRule ^index.html.var(.*)$ http://localhost:50155/socket.io/$1 [P]
