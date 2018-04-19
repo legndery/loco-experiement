@@ -56,7 +56,7 @@
                     <p></p>
                 </div>
             </div>`;
-        var socket = io("https://trappedpanda.com", opt);
+        var socket = io("http://trappedpanda.com", opt);
         var onevent = socket.onevent;
         socket.onevent = function (packet) {
             var args = packet.data || [];
