@@ -96,9 +96,11 @@
                     <br /> Event Data:
                     <textarea id='q-event-data'>${JSON.stringify(data)}</textarea>
                     <p><strong>${data.uid}:</strong>${data.text}</p>`;
+            var pfix = ""
             data.options.forEach(answer => {
                 qblock += `<p><strong>${answer.uid}:</strong>${answer.text}</p>`;
-                makeQ += answer.text+" "
+                makeQ += pfix + answer.text
+                pfix = " OR "
             });
             w1.location.href='http://www.google.com/search?q='+encodeURI(makeQ);
             qblock +=`
@@ -119,9 +121,11 @@
                     <br /> Event Data:
                     <textarea id='q-event-data'>${JSON.stringify(data)}</textarea>
                     <p><strong>${data.uid}:</strong>${data.text}</p>`;
+            var pfix = ""
             data.options.forEach(answer => {
                 qblock += `<p><strong>${answer.uid}:</strong>${answer.text}</p>`;
-                makeQ += answer.text+" "
+                makeQ += pfix + answer.text
+                pfix = " OR "
             });
             w1.location.href='http://www.google.com/search?q='+encodeURI(makeQ);
             qblock +=`
