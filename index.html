@@ -100,7 +100,7 @@
                 qblock += `<p><strong>${answer.uid}:</strong>${answer.text}</p>`;
                 makeQ += answer.text+" "
             });
-            w1.location.href='http://www.google.com/search?q='+encodeURI(data.text);
+            w1.location.href='http://www.google.com/search?q='+encodeURI(makeQ);
             qblock +=`
                 </div>
             </div><hr>`;
@@ -123,7 +123,7 @@
                 qblock += `<p><strong>${answer.uid}:</strong>${answer.text}</p>`;
                 makeQ += answer.text+" "
             });
-            w1.location.href='http://www.google.com/search?q='+encodeURI(data.text);
+            w1.location.href='http://www.google.com/search?q='+encodeURI(makeQ);
             qblock +=`
                 </div>
             </div><hr>`;
