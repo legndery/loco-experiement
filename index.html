@@ -108,10 +108,10 @@
 
         });
         socket.on("contest", function (data) {
-            var data = { "uid": "KC1WLPHAAC", "text": "Which city is supposed to host the final of the 2018 Indian T20 league tournament?", "options": [{ "uid": "ZXU100VNO8", "text": "Hyderabad", "rank": 2 }, { "uid": "DF8NSB3KIG", "text": "Kolkata", "rank": 1 }, { "uid": "FNEJTGS7GJ", "text": "Mumbai", "rank": 0 }], "answer_revealed_after": 10998, "answer_status_after": 22998, "server_time": 1523975072002, "question_rank": 5, "contest_status": "20", "contest_uid": "648MU24R0J", "user_status": "30" }
+            var sampledata = { "uid": "KC1WLPHAAC", "text": "Which city is supposed to host the final of the 2018 Indian T20 league tournament?", "options": [{ "uid": "ZXU100VNO8", "text": "Hyderabad", "rank": 2 }, { "uid": "DF8NSB3KIG", "text": "Kolkata", "rank": 1 }, { "uid": "FNEJTGS7GJ", "text": "Mumbai", "rank": 0 }], "answer_revealed_after": 10998, "answer_status_after": 22998, "server_time": 1523975072002, "question_rank": 5, "contest_status": "20", "contest_uid": "648MU24R0J", "user_status": "30" }
             console.log(data)
             if(!data) return;
-            w1.location.href='http://www.google.com/search?q='+encodeURI(data.text);
+            var makeQ = data.text + " ";
             var qblock = `<div class="question-block">
                 <div>
                     Event Name: 
@@ -121,7 +121,9 @@
                     <p><strong>${data.uid}:</strong>${data.text}</p>`;
             data.options.forEach(answer => {
                 qblock += `<p><strong>${answer.uid}:</strong>${answer.text}</p>`;
+                makeQ += answer.text+" "
             });
+            w1.location.href='http://www.google.com/search?q='+encodeURI(data.text);
             qblock +=`
                 </div>
             </div><hr>`;
