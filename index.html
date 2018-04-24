@@ -98,7 +98,7 @@
                     <p><strong>${data.uid}:</strong>${data.text}</p>`;
             var pfix = ""
             data.options.forEach(answer => {
-                qblock += `<p><strong>${answer.uid}:</strong>${answer.text}</p>`;
+                qblock += `<p><strong>${answer.uid}:</strong>${answer.text}</p><input type='text' value='$1${data.uid}$2${answer.uid}$3`;
                 makeQ += pfix + answer.text
                 pfix = " OR "
             });
